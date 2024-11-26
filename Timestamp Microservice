@@ -1,0 +1,83 @@
+    -Development-and-APIs-Projects.git
+(getUserInput) =>
+  $.get(getUserInput('url') + '/api/2016-12-25').then(
+    (data) => {
+      assert.equal(
+        data.unix,
+        1482624000000,
+        'Should be a valid unix timestamp'
+      );
+    },
+    (xhr) => {
+      throw new Error(xhr.responseText);
+    }
+  );
+  (getUserInput) =>
+  $.get(getUserInput('url') + '/api/2016-12-25').then(
+    (data) => {
+      assert.equal(
+        data.utc,
+        'Sun, 25 Dec 2016 00:00:00 GMT',
+        'Should be a valid UTC date string'
+      );
+    },
+    (xhr) => {
+      throw new Error(xhr.responseText);
+    }
+  );
+  (getUserInput) =>
+  $.get(getUserInput('url') + '/api/2016-12-25').then(
+    (data) => {
+      assert.equal(
+        data.utc,
+        'Sun, 25 Dec 2016 00:00:00 GMT',
+        'Should be a valid UTC date string'
+      );
+    },
+    (xhr) => {
+      throw new Error(xhr.responseText);
+    }
+  );
+  (getUserInput) =>
+  $.get(getUserInput('url') + '/api/1451001600000').then(
+    (data) => {
+      assert(
+        data.unix === 1451001600000 &&
+          data.utc === 'Fri, 25 Dec 2015 00:00:00 GMT'
+      );
+    },
+    (xhr) => {
+      throw new Error(xhr.responseText);
+    }
+  );
+  (getUserInput) =>
+  $.get(getUserInput('url') + '/api/05 October 2011, GMT').then(
+    (data) => {
+      assert(
+        data.unix === 1317772800000 &&
+          data.utc === 'Wed, 05 Oct 2011 00:00:00 GMT'
+      );
+    },
+    (xhr) => {
+      throw new Error(xhr.responseText);
+    }
+  );
+  (getUserInput) =>
+  $.get(getUserInput('url') + '/api/this-is-not-a-date').then(
+    (data) => {
+      assert.equal(data.error.toLowerCase(), 'invalid date');
+    },
+    (xhr) => {
+      assert(xhr.responseJSON.error.toLowerCase() === 'invalid date');
+    }
+  );
+  (getUserInput) =>
+  $.get(getUserInput('url') + '/api').then(
+    (data) => {
+      var now = Date.now();
+      var serverTime = new Date(data.utc).getTime();
+      assert.approximately(serverTime, now, 20000);
+    },
+    (xhr) => {
+      throw new Error(xhr.responseText);
+    }
